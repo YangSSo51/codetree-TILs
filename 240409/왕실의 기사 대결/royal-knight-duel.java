@@ -63,6 +63,12 @@ public class Main {
                 damageKnight(idx,direction);
             }
         }
+//        System.out.println(totalDamage);
+        for(int i=1;i<=N;i++) {
+        	if(knights[i].damage < knights[i].k) {
+        		totalDamage+=knights[i].damage;
+        	}
+        }
         System.out.println(totalDamage);
     }
 
@@ -89,9 +95,6 @@ public class Main {
                 else range = knights[now].h;
 
                 for (int j = 0; j < range; j++) {
-                    if (direction % 2 == 0)  ny += j;
-                    else nx += j;
-
                     //영역 벗어나면 벽
                     if (isRange(nx, ny)) {
                         if (board[nx][ny] == 2) {
@@ -106,6 +109,8 @@ public class Main {
                     } else {
                         return false;
                     }
+                    if (direction % 2 == 0)  ny ++;
+                    else nx ++;
                 }
             }
         }
@@ -130,23 +135,24 @@ public class Main {
             else range = knights[now].h;
 //            System.out.println("range : "+range);
             for (int j = 0; j < range; j++) {
-                if (direction % 2 == 0) {
-                	ny += j;
-                	py += j;
-                }
-                else {
-                	nx += j;
-                	px +=j;
-                }
+                
 //                System.out.println("nx ny :"+nx+" "+ny);
 //                System.out.println("px py :"+px+" "+py);
 
                 knightBoard[nx][ny] = now;
                 knightBoard[px][py] = 0;
+                if (direction % 2 == 0) {
+                	ny ++;
+                	py ++;
+                }
+                else {
+                	nx ++;
+                	px ++;
+                }
             }
             knights[now].r += dx[direction];
             knights[now].c += dy[direction];
-////            System.out.println(now);
+//            System.out.println(idx+" "+direction);
 //            for (int i = 1; i <= L; i++) {
 //                for (int j = 1; j <= L; j++) {
 //                    System.out.print(knightBoard[i][j]+" ");
@@ -159,10 +165,10 @@ public class Main {
                     if(board[i][j] == 1){
                         if(knights[now].damage < knights[now].k && idx!=now) {
                             knights[now].damage++;
-                            totalDamage++;
-                            if(knights[now].damage == knights[now].k){
-                            	totalDamage-= knights[now].k;
-                            }
+//                            totalDamage++;
+//                            if(knights[now].damage == knights[now].k){
+//                            	totalDamage-= knights[now].k;
+//                            }
                         }
                     }
                 }
