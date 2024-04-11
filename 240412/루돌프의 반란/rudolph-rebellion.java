@@ -11,7 +11,7 @@ public class Main {
 	static int[] dc = {1,0,-1,1,-1,1,0,-1};
 	
 	//상우하좌
-	static int[] dx = {1,0,-1,0};
+	static int[] dx = {-1,0,1,0};
 	static int[] dy = {0,1,0,-1};
 
     public static void main(String[] args) throws IOException {
@@ -93,7 +93,7 @@ public class Main {
 	 private static void moveSantas() {
 		 for(int i=1;i<=P;i++) {
 			 //존재하는 산타이고 기절하지 않아야함 
-			 if(!santas[i].isOver && (santas[i].stun == 0 || K-santas[i].stun >= 2) ) {
+			 if(!santas[i].isOver && K-santas[i].stun >= 2)  {
 				 double distance = getDistance(santas[i].r,santas[i].c);
 				 
 				 double minDistance = Integer.MAX_VALUE;
@@ -195,7 +195,6 @@ public class Main {
 	    	pushSanta(minIdx, C, minDir,dr,dc);	        
 	    }
     	board[rudolf_r][rudolf_c] = -1;	//루돌프
-    	return;
     }
     
     private static void pushSanta(int idx, int dis, int dir,int[] dr,int[] dc) {
@@ -225,7 +224,7 @@ public class Main {
 	static class Santa{
     	int r;
     	int c;
-    	int stun;
+    	int stun = -2;
     	int score;
     	boolean isOver = false;
     	Santa(int r,int c){
