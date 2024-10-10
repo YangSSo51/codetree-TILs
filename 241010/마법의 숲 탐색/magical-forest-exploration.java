@@ -100,7 +100,7 @@ public class Main {
 				int nx = x + rightX[i];
 				int ny = y + rightY[i];
 				
-				if(isRange(nx,ny) && board[nx][ny] == 0) continue;
+				if((isRange(nx,ny) && board[nx][ny] == 0) || nx < 0) continue;
 				else {
 					moveRight = false;
 					break;
@@ -134,7 +134,7 @@ public class Main {
 				int nx = x + leftX[i];
 				int ny = y + leftY[i];
 				
-				if(isRange(nx,ny) && board[nx][ny] == 0) continue;
+				if((isRange(nx,ny) && board[nx][ny] == 0) || nx < 0) continue;
 				else {
 					moveLeft = false;
 					break;
