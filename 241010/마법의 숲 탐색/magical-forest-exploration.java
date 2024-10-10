@@ -76,7 +76,7 @@ public class Main {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
 			
-			if(isRange(nx,ny)) {
+			if(nx >=1 && nx <= R && ny >=1 && ny <= C) {
 				board[nx][ny] = num;
 			}else {
 				board = new int[R+1][C+1];	//초기화
