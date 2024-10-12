@@ -1,7 +1,6 @@
 import java.util.*;
 import java.io.*;
 
-//1:45
 public class Main { 
 	static int[][] board;
 	static Queue<Integer> newArtifact;
@@ -40,10 +39,10 @@ public class Main {
     }
 
 	private static void findCenter() {
-		for (int i = 2; i <= 4; i++) {
-			for (int j = 2; j <= 4; j++) {
-				for (int k = 0; k < 3; k++) {
-					int[][] rotate = rotation(j,i,1);
+		for (int k = 1; k <= 3; k++) {
+			for (int i = 2; i <= 4; i++) {
+				for (int j = 2; j <= 4; j++) {
+					int[][] rotate = rotation(j,i,k);
 					int count = findArtifact(rotate);
 
 					if(maxCount < count) {
@@ -131,17 +130,17 @@ public class Main {
 		}
 		
 		for (int i = 0; i < count; i++) {
-			rotate[x-1][y-1] = board[x+1][y-1];
-			rotate[x-1][y+0] = board[x][y-1];
-			rotate[x-1][y+1] = board[x-1][y-1];
+			int temp = rotate[x-1][y-1];
+			rotate[x-1][y-1] = rotate[x+1][y-1];
+			rotate[x+1][y-1] = rotate[x+1][y+1];
+			rotate[x+1][y+1] = rotate[x-1][y+1];
+			rotate[x-1][y+1] = temp;
 
-			rotate[x][y-1] = board[x+1][y];
-			rotate[x][y+1] = board[x-1][y];
-
-			rotate[x+1][y-1] = board[x+1][y+1];
-			rotate[x+1][y+0] = board[x][y+1];
-			rotate[x+1][y+1] = board[x-1][y+1];
-
+			temp = rotate[x-1][y];
+			rotate[x-1][y] = rotate[x][y-1];			
+			rotate[x][y-1] = rotate[x+1][y];
+			rotate[x+1][y] = rotate[x][y+1];
+			rotate[x][y+1] = temp;
 		}
 		
 //		print(rotate);
