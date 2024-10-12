@@ -9,7 +9,6 @@ public class Main {
 	static int[] dx = {-1,0,1,0};
 	static int[] dy = {0,1,0,-1};
 	
-//	static ArrayList<Knight> knightList = new ArrayList<>();
 	static Knight[] knightArr;
 	static int totalDamage;
 	
@@ -74,6 +73,10 @@ public class Main {
     	movedKnight.add(num);
     	boolean[] visited = new boolean[N+1];
     	
+    	for (int i = 1; i <= N; i++) {
+			knightArr[i].isMoved = false;
+		}
+    	
     	while(!Q.isEmpty()) {
     		int now = Q.poll();
     		Knight knight = knightArr[now];
@@ -92,7 +95,6 @@ public class Main {
 					}
 					
 					if(knightBoard[nx][ny] !=0 && !visited[knightBoard[nx][ny]]) {
-//						System.out.println("다음 기사 "+knightBoard[nx][ny]);
 						visited[knightBoard[nx][ny]] = true;
 						Q.add(knightBoard[nx][ny]);
 						movedKnight.add(knightBoard[nx][ny]);
@@ -107,8 +109,6 @@ public class Main {
 						return;
 					}
 					if(knightBoard[nx][ny] !=0 && !visited[knightBoard[nx][ny]]) {
-//						System.out.println("다음 기사 "+knightBoard[nx][ny]);
-
 						visited[knightBoard[nx][ny]] = true;
 						Q.add(knightBoard[nx][ny]);
 						movedKnight.add(knightBoard[nx][ny]);
@@ -116,7 +116,6 @@ public class Main {
 				}
     		}
     	}
-//    	System.out.println(movedKnight.size());
     	
     	
     	//밀려난 기사만 데미지를 입음. 
@@ -129,62 +128,31 @@ public class Main {
     		// 단, 명령을 받은 기사는 피해를 입지 않으며, 기사들은 모두 밀린 이후에 대미지를 입게 됩니다. 
     		int now = movedKnight.pollLast();
     		Knight knight = knightArr[now];
+    		knight.isMoved = true;
     		
-    		int nx = 0, ny = 0;
-    		if(dir == 0 || dir == 2) {
-	    		for (int i = knight.c; i < knight.c + knight.w; i++) {
-					nx = knight.r + (dir == 2 ? knight.h : -1);
-					ny = i;
-					
-					//이동할 위치 채움 
-					knightBoard[nx][ny] = now;
-					if(board[nx][ny] == 1) {
-						knight.k--;
-						knight.damage++;
-					}
-					
-					int px = knight.r + (dir == 2 ? 0 : knight.h-1);
-					int py = i;
-					
-					//이전 위치 비움 
-					knightBoard[px][py] = 0;
-					if(board[px][py] == 1) knight.damage--;
-	    		}
-    		}else {
-    			for (int i = knight.r; i < knight.r + knight.h; i++) {
-    				nx = i;
-					ny = knight.c + (dir == 1 ? knight.w : -1);
-
-					knightBoard[nx][ny] = now;
-					if(board[nx][ny] == 1) {
-						knight.k--;
-						knight.damage++;
-					}
-					
-					int px = i;
-					int py = knight.c + (dir == 1 ? 0 : knight.w-1);
-										
-
-					//이전 위치 비움 
-					knightBoard[px][py] = 0;
-					if(board[px][py] == 1) knight.damage--;
-					
-    			}
-    		}
     		knight.r += dx[dir];
     		knight.c += dy[dir];
-    		
-    		if(now == firstKnight) {
-    			knight.k += knight.damage;
-    		}else {
-        		knight.totalDamage += knight.damage;
-    		}
-    		
-    		if(knight.k <= 0) {
-        		removeKnight(knight);
-    		}
     	}
+    	moveKnightOnBoard(firstKnight);
 //    	print();
+	}
+	private static void moveKnightOnBoard(int first) {
+		knightBoard = new int[L+1][L+1];
+    	for (int i = 1; i <= N; i++) {
+    		Knight knight = knightArr[i];
+			for (int j = knight.r; j < knight.r+knight.h; j++) {
+				for (int k = knight.c; k < knight.c+knight.w; k++) {
+					knightBoard[j][k] = i;
+					if(board[j][k] == 1 && i != first && knight.isMoved) {
+						knight.k --;
+						knight.totalDamage++;
+					}
+				}
+			}
+			if(knight.k <= 0) {
+				removeKnight(knight);
+			}
+    	}
 	}
 	private static void removeKnight(Knight k) {
 		for (int i = k.r; i < k.r+k.h; i++) {
@@ -213,6 +181,7 @@ public class Main {
     	int k;
     	int damage;
     	int totalDamage;
+    	boolean isMoved;
     	
     	Knight(int r,int c, int h, int w, int k){
     		this.r = r;
