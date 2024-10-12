@@ -66,7 +66,7 @@ public class Main {
     }
     private static void moveKnight(int num, int dir) {
     	// 또, 체스판에서 사라진 기사에게 명령을 내리면 아무런 반응이 없게 됩니다.		
-    	if(knightArr[num].k < 0) return;
+    	if(knightArr[num].k <= 0) return;
     	Queue<Integer> Q = new LinkedList<>();
     	Deque<Integer> movedKnight = new ArrayDeque<>();
     	Q.add(num);
